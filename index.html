@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14213d" />
+    <meta
+      name="description"
+      content="Calculadora para estimar una tasa promedial en VES segun la variacion del dolar."
+    />
+    <title>Calculadora Promedial</title>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Promedial" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar" aria-labelledby="app-title">
+        <div>
+          <p class="eyebrow">VES / USD</p>
+          <h1 id="app-title">Calculadora Promedial</h1>
+        </div>
+        <div class="rate-badge" aria-label="Modo offline disponible">
+          <span class="pulse"></span>
+          Offline
+        </div>
+      </section>
+
+      <section class="summary-panel" aria-live="polite">
+        <div>
+          <p class="label">Tasa sugerida</p>
+          <strong id="suggestedRate">--</strong>
+          <span id="suggestedCaption">Completa los datos para calcular.</span>
+        </div>
+        <canvas id="rateChart" width="620" height="260" aria-label="Grafico de tasas proyectadas"></canvas>
+      </section>
+
+      <section class="mode-control" aria-label="Modo de calculo">
+        <button class="mode-button active" type="button" data-mode="average">
+          Promedio del mes
+        </button>
+        <button class="mode-button" type="button" data-mode="conservative">
+          Conservador
+        </button>
+      </section>
+
+      <form class="calculator" id="calculatorForm">
+        <fieldset>
+          <legend>Movimiento del dólar</legend>
+          <label>
+            Fecha inicial
+            <input id="startDate" type="date" value="2026-05-24" />
+          </label>
+          <label>
+            Tasa inicial
+            <input id="startRate" type="number" inputmode="decimal" min="0" step="0.01" value="655.00" />
+          </label>
+          <label>
+            Fecha actual
+            <input id="endDate" type="date" value="2026-06-24" />
+          </label>
+          <label>
+            Tasa actual
+            <input id="endRate" type="number" inputmode="decimal" min="0" step="0.01" value="732.00" />
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Precio del producto o servicio</legend>
+          <label>
+            Valor base en USD
+            <input id="baseUsd" type="number" inputmode="decimal" min="0" step="0.01" value="100.00" />
+          </label>
+          <label>
+            Margen de ganancia
+            <div class="input-with-suffix">
+              <input id="margin" type="number" inputmode="decimal" min="0" step="0.1" value="30" />
+              <span>%</span>
+            </div>
+          </label>
+          <label>
+            Días sin cambiar precio
+            <input id="horizonDays" type="number" inputmode="numeric" min="1" max="120" step="1" value="30" />
+          </label>
+          <label>
+            Colchón adicional
+            <div class="input-with-suffix">
+              <input id="cushion" type="number" inputmode="decimal" min="0" step="0.1" value="2" />
+              <span>%</span>
+            </div>
+          </label>
+        </fieldset>
+      </form>
+
+      <section class="results-grid" aria-label="Resultados">
+        <article>
+          <span>Variación histórica</span>
+          <strong id="historicalChange">--</strong>
+        </article>
+        <article>
+          <span>Promedio diario</span>
+          <strong id="dailyChange">--</strong>
+        </article>
+        <article>
+          <span>Tasa fin del período</span>
+          <strong id="projectedEndRate">--</strong>
+        </article>
+        <article>
+          <span>Agregar sobre tasa actual</span>
+          <strong id="extraPercent">--</strong>
+        </article>
+      </section>
+
+      <section class="price-panel">
+        <div>
+          <p class="label">Precio sugerido en VES</p>
+          <strong id="suggestedPrice">--</strong>
+        </div>
+        <div class="price-lines">
+          <p><span>Precio a tasa actual</span><strong id="currentPrice">--</strong></p>
+          <p><span>Diferencia de protección</span><strong id="protectionAmount">--</strong></p>
+          <p><span>Valor de venta en USD</span><strong id="saleUsd">--</strong></p>
+        </div>
+        <button class="copy-button" id="copyResult" type="button">Copiar resultado</button>
+      </section>
+
+      <section class="note-panel">
+        <h2>Lectura rápida</h2>
+        <p id="plainExplanation">
+          Con los datos de ejemplo, la calculadora estima cuánto ajustar hoy para sostener el precio durante un mes.
+        </p>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
